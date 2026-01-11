@@ -1,0 +1,4 @@
+module libopus [system] {
+    umbrella header "libopus.h"
+    link "opus"
+}
