@@ -25,7 +25,7 @@ final public class Decoder {
     ///   - output: The output buffer to write the decoded PCM samples into.
     ///   - fec: Whether to use forward error correction.
     /// - Returns: The number of decoded samples per channel.
-    func decode(_ input: Data, to output: inout Data, fec: Bool = false) throws(OpusError) -> Int32 {
+    public func decode(_ input: Data, to output: inout Data, fec: Bool = false) throws(OpusError) -> Int32 {
         let decodedSamples = output.withUnsafeMutableBytes { outputBuffer in
             input.withUnsafeBytes { inputBuffer in
                 let inputBuffer = inputBuffer.bindMemory(to: UInt8.self)
@@ -47,4 +47,5 @@ final public class Decoder {
 
         return decodedSamples
     }
+
 }

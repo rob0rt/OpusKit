@@ -47,3 +47,42 @@ public enum SampleRate: Int32 {
     case `24000` = 24000
     case `48000` = 48000
 }
+
+public enum Signal: RawRepresentable {
+    case auto
+    case voice
+    case music
+
+    public init?(rawValue: Int32) {
+        switch rawValue {
+        case OPUS_AUTO:
+            self = .auto
+        case OPUS_SIGNAL_VOICE:
+            self = .voice
+        case OPUS_SIGNAL_MUSIC:
+            self = .music
+        default:
+            return nil
+        }
+    }
+
+    public var rawValue: Int32 {
+        switch self {
+        case .auto:
+            return OPUS_AUTO
+        case .voice:
+            return OPUS_SIGNAL_VOICE
+        case .music:
+            return OPUS_SIGNAL_MUSIC
+        }
+    }
+}
+
+public enum ForwardErrorCorrection: Int32 {
+    ///  Disable inband FEC (default).
+    case disabled = 0
+    /// Inband FEC enabled. If the packet loss rate is sufficiently high, Opus will automatically switch to SILK even at high rates to enable use of that FEC.
+    case enabled = 1
+    /// Inband FEC enabled, but does not necessarily switch to SILK if we have music.
+    case enabledNoSwitch = 2
+}

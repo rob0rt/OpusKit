@@ -128,6 +128,10 @@ static inline int opus_get_prediction_disabled(OpusEncoder *st, opus_int32 *pred
     return opus_encoder_ctl(st, OPUS_GET_PREDICTION_DISABLED(prediction_disabled));
 }
 
+static inline int opus_encoder_get_in_dtx(OpusEncoder *st, opus_int32 *in_dtx) {
+    return opus_encoder_ctl(st, OPUS_GET_IN_DTX(in_dtx));
+}
+
 // ============================================================================
 // Decoder CTLs
 // ============================================================================
@@ -198,10 +202,6 @@ static inline int opus_decoder_set_phase_inversion_disabled(OpusDecoder *st, opu
 
 static inline int opus_decoder_get_phase_inversion_disabled(OpusDecoder *st, opus_int32 *phase_inversion_disabled) {
     return opus_decoder_ctl(st, OPUS_GET_PHASE_INVERSION_DISABLED(phase_inversion_disabled));
-}
-
-static inline int opus_encoder_get_in_dtx(OpusEncoder *st, opus_int32 *in_dtx) {
-    return opus_encoder_ctl(st, OPUS_GET_IN_DTX(in_dtx));
 }
 
 // ============================================================================
@@ -328,8 +328,12 @@ static inline int opus_ms_get_prediction_disabled(OpusMSEncoder *st, opus_int32 
     return opus_multistream_encoder_ctl(st, OPUS_GET_PREDICTION_DISABLED(prediction_disabled));
 }
 
-static inline int opus_ms_get_encoder_state(OpusMSEncoder *st, OpusEncoder **encoder_state) {
-    return opus_multistream_encoder_ctl(st, OPUS_MULTISTREAM_GET_ENCODER_STATE(encoder_state));
+static inline int opus_ms_get_encoder_state(OpusMSEncoder *st, opus_int32 index, OpusEncoder **encoder_state) {
+    return opus_multistream_encoder_ctl(st, OPUS_MULTISTREAM_GET_ENCODER_STATE(index, encoder_state));
+}
+
+static inline int opus_ms_encoder_get_in_dtx(OpusMSEncoder *st, opus_int32 *in_dtx) {
+    return opus_multistream_encoder_ctl(st, OPUS_GET_IN_DTX(in_dtx));
 }
 
 // ============================================================================
@@ -352,8 +356,8 @@ static inline int opus_ms_decoder_get_pitch(OpusMSDecoder *st, opus_int32 *pitch
     return opus_multistream_decoder_ctl(st, OPUS_GET_PITCH(pitch));
 }
 
-static inline int opus_ms_get_decoder_state(OpusMSDecoder *st, OpusDecoder **decoder_state) {
-    return opus_multistream_decoder_ctl(st, OPUS_MULTISTREAM_GET_DECODER_STATE(decoder_state));
+static inline int opus_ms_get_decoder_state(OpusMSDecoder *st, opus_int32 index, OpusDecoder **decoder_state) {
+    return opus_multistream_decoder_ctl(st, OPUS_MULTISTREAM_GET_DECODER_STATE(index, decoder_state));
 }
 
 // ============================================================================
@@ -406,8 +410,4 @@ static inline int opus_ms_decoder_set_phase_inversion_disabled(OpusMSDecoder *st
 
 static inline int opus_ms_decoder_get_phase_inversion_disabled(OpusMSDecoder *st, opus_int32 *phase_inversion_disabled) {
     return opus_multistream_decoder_ctl(st, OPUS_GET_PHASE_INVERSION_DISABLED(phase_inversion_disabled));
-}
-
-static inline int opus_ms_encoder_get_in_dtx(OpusMSEncoder *st, opus_int32 *in_dtx) {
-    return opus_multistream_encoder_ctl(st, OPUS_GET_IN_DTX(in_dtx));
 }
