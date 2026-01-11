@@ -2,7 +2,7 @@ import libopus
 import Foundation
 
 /// Represents errors that can occur in the Opus codec.
-enum OpusError: RawRepresentable, LocalizedError {
+public enum OpusError: LocalizedError {
     /// One or more invalid/out of range arguments
     case badArgument
     /// Not enough bytes allocated in the buffer
@@ -20,7 +20,11 @@ enum OpusError: RawRepresentable, LocalizedError {
     /// libopus returned an unknown error code (ret < 0)
     case unknown(Int32)
 
-    init(rawValue: Int32) {
+    public var errorDescription: String? {
+        String(cString: opus_strerror(rawValue))
+    }
+
+    public init(rawValue: Int32) {
         switch rawValue {
             case OPUS_BAD_ARG:
                 self = .badArgument
@@ -41,7 +45,7 @@ enum OpusError: RawRepresentable, LocalizedError {
         }
     }
 
-    var rawValue: Int32 {
+    public var rawValue: Int32 {
         switch self {
         case .badArgument:
             return OPUS_BAD_ARG
@@ -60,9 +64,5 @@ enum OpusError: RawRepresentable, LocalizedError {
         case .unknown(let code):
             return code
         }
-    }
-
-    var errorDescription: String? {
-        String(cString: opus_strerror(rawValue))
     }
 }

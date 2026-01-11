@@ -5,21 +5,21 @@ final public class Encoder {
     private let pointer: OpaquePointer
     private let channels: Channels
 
-    init(sampleRate: Int32, channels: Channels, mode: Application) throws(OpusError) {
+    public init(sampleRate: SampleRate, channels: Channels, mode: Application) throws(OpusError) {
         self.channels = channels
 
         var errorCode: Int32 = 0
-        self.pointer = opus_encoder_create(sampleRate, channels.rawValue, mode.rawValue, &errorCode)
+        self.pointer = opus_encoder_create(sampleRate.rawValue, channels.rawValue, mode.rawValue, &errorCode)
         if errorCode != OPUS_OK {
             throw OpusError(rawValue: errorCode)
-        }        
+        }
     }
 
     deinit {
         opus_encoder_destroy(pointer)
     }
 
-    func encode(_ input: Data, to output: inout Data) throws(OpusError) -> Int32 {
+    public func encode(_ input: Data, to output: inout Data) throws(OpusError) -> Int32 {
         let encodedPacketLength = output.withUnsafeMutableBytes { outputBuffer in
             input.withUnsafeBytes { inputBuffer in
                 let inputBuffer = inputBuffer.bindMemory(to: Int16.self)
@@ -41,7 +41,7 @@ final public class Encoder {
         return encodedPacketLength
     }
 
-    func get_application() -> Application? {
+    public func get_application() -> Application? {
         var application: Int32 = 0
         opus_get_application(pointer, &application)
         return Application(rawValue: application)

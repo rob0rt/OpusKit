@@ -5,11 +5,11 @@ final public class Decoder {
     private let pointer: OpaquePointer
     private let channels: Channels
 
-    init(sampleRate: Int32, channels: Channels) throws(OpusError) {
+    public init(sampleRate: SampleRate, channels: Channels) throws(OpusError) {
         self.channels = channels
 
         var errorCode: Int32 = 0
-        self.pointer = opus_decoder_create(sampleRate, channels.rawValue, &errorCode)
+        self.pointer = opus_decoder_create(sampleRate.rawValue, channels.rawValue, &errorCode)
         if errorCode != OPUS_OK {
             throw OpusError(rawValue: errorCode)
         }

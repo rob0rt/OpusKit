@@ -2,7 +2,7 @@ import libopus
 import Foundation
 
 /// Application mode for the Opus encoder.
-enum Application: RawRepresentable {
+public enum Application: RawRepresentable {
     /// Best for broadcast/high-fidelity application where the decoded audio should be as close as possible to the input
     case audio
     /// Best for most VoIP/videoconference applications where listening quality and intelligibility matter most
@@ -10,7 +10,7 @@ enum Application: RawRepresentable {
     /// Only use when lowest-achievable latency is what matters most. Voice-optimized modes cannot be used.
     case restrictedLowDelay
 
-    init?(rawValue: Int32) {
+    public init?(rawValue: Int32) {
         switch rawValue {
         case OPUS_APPLICATION_AUDIO:
             self = .audio
@@ -23,7 +23,7 @@ enum Application: RawRepresentable {
         }
     }
 
-    var rawValue: Int32 {
+    public var rawValue: Int32 {
         switch self {
         case .audio:
             return OPUS_APPLICATION_AUDIO
@@ -35,7 +35,15 @@ enum Application: RawRepresentable {
     }
 }
 
-enum Channels: Int32 {
+public enum Channels: Int32 {
     case mono = 1
     case stereo = 2
+}
+
+public enum SampleRate: Int32 {
+    case `8000` = 8000
+    case `12000` = 12000
+    case `16000` = 16000
+    case `24000` = 24000
+    case `48000` = 48000
 }
